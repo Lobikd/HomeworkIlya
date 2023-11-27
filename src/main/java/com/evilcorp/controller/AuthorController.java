@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +39,20 @@ public class AuthorController {
         return optionalAuthor.map(author ->
                 new ResponseEntity<>(author.getBooks(), HttpStatus.OK)).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    }
+
+    @GetMapping("/author/{name}")
+    public ResponseEntity<List<Author>> getAuthorsForName(@PathVariable String name) {
+        List<Author> resultAuthor = new ArrayList<>();
+        Iterable<Author> iterableAuthor = authorRepository.findAll();
+        Iterator<Author> iteratorAuthor = iterableAuthor.iterator();
+        while (iteratorAuthor.hasNext()) {
+            Author author = iteratorAuthor.next();
+            if (author.getName().equalsIgnoreCase(name)) {
+                resultAuthor.add(author);
+            }
+        }
+        return new ResponseEntity<List<Author>>(resultAuthor, HttpStatus.OK);
     }
 
     @PostMapping("/add-author")
