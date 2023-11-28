@@ -57,6 +57,12 @@ public class AuthorController {
         return authorRepository.findByName(name);
     }
 
+    @GetMapping("/author/{name}/{nationality}")
+    public List<Author> getAuthorsByNameAndNationality(@PathVariable("name") String name,
+                                             @PathVariable("nationality") String nationality) {
+        return authorRepository.findByNameAndNationality(name, nationality);
+    }
+
     @PostMapping("/add-author")
     public UUID add(@RequestBody Author author) {
         Author newAuthor = authorRepository.save(author);
