@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,6 +55,9 @@ public class AuthorController {
     @GetMapping("/authors")
     public List<Author> getAuthorsByNameOrNationality(@RequestParam(required = false) String name,
                                                       @RequestParam(required = false) String nationality) {
+        if (name == null && nationality == null) {
+            return List.of();
+        }
         return authorRepository.findByNameOrNationality(name, nationality);
     }
 
