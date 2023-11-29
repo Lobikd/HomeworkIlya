@@ -40,7 +40,6 @@ public class AuthorController {
                 new ResponseEntity<>(author.getBooks(), HttpStatus.OK)).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
-
     @GetMapping("/author/{name}")
     public List<Author> getAuthorsByName(@PathVariable String name) {
         return authorRepository.findByName(name);
@@ -50,6 +49,12 @@ public class AuthorController {
     public List<Author> getAuthorsByNameAndNationality(@PathVariable("name") String name,
                                              @PathVariable("nationality") String nationality) {
         return authorRepository.findByNameAndNationality(name, nationality);
+    }
+
+    @GetMapping("/authors")
+    public List<Author> getAuthorsByNameOrNationality(@RequestParam(required = false) String name,
+                                                      @RequestParam(required = false) String nationality) {
+        return authorRepository.findByNameOrNationality(name, nationality);
     }
 
     @PostMapping("/add-author")
